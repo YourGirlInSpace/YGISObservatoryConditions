@@ -1,0 +1,61 @@
+@use "sass:map";
+
+@mixin ie-only() {
+    // alternately @supports not (-ms-ime-align: auto)
+    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+        @content;
+    }
+}
+
+@mixin fitContent {
+    // Edge doesn't support fit-content, but display:table works instead
+    @supports (-ms-ime-align: auto) {
+        display: table;
+    }
+    
+    // Ignore this stuff with Edge.  Doesn't work.
+    @supports not (-ms-ime-align: auto) {
+        width: intrinsic;
+        width: -webkit-fit-content;
+        width: -moz-fit-content;
+        width: fit-content;
+    }
+}
+
+@mixin dropShadow($offsetX, $offsetY, $radius, $color) {
+    @supports (filter: none) or (-webkit-filter: none) or (-moz-filter: none) {
+        filter: drop-shadow($offsetX $offsetY $radius $color);
+        -webkit-filter: drop-shadow($offsetX $offsetY $radius $color);
+        -moz-filter: drop-shadow($offsetX $offsetY $radius $color);
+    }
+}
+
+@mixin dropShadow2($map) {
+    @include dropShadow(map.get($map, "offsetX"), map.get($map, "offsetY"), map.get($map, "radius"), map.get($map, "color"))
+}
+
+@mixin backdropFilter($filter, $backupColor: #FFF7) {
+    @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+        -webkit-backdrop-filter: $filter;
+        backdrop-filter: $filter;
+    }
+
+    @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+        background-color: $backupColor;
+    
+        // Dirty blurred background hack
+        &::before {
+            content: '';
+            margin: -25px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            filter: $filter;
+            transform: scale(1.2);
+            z-index: -1;
+            height: 100%;
+        }
+    }
+}

@@ -1,0 +1,17 @@
+@use '../../../styles/mixins' as *;
+@use '../gaugeCommon' as *;
+
+.wxstatbox
+{
+    .wxcircular-chart {
+        .wxarrow {
+            position: relative;
+            transform-origin: center;
+
+            stroke: white;
+            fill: white;
+
+            @include dropShadow2($arrowDropShadow);
+        }
+    }
+}

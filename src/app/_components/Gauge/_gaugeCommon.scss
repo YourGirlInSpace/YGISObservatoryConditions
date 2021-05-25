@@ -1,0 +1,116 @@
+@use '../../styles/mixins' as *;
+
+// Used on all text in the gauge, including
+// measurement, unit, label and cardinal direction.
+$textDropShadow: (
+    "offsetX": 1px,
+    "offsetY": 1px,
+    "radius": 1px,
+    "color": rgba(0, 0, 0, 0.25)
+);
+
+// ONLY for wind gauge
+$arrowDropShadow: (
+    "offsetX": 0px,
+    "offsetY": 0px,
+    "radius": 0px,
+    "color": rgba(0, 0, 0, 0.25)
+);
+
+// Global drop shadow of the gauge
+$gaugeDropShadow: (
+    "offsetX": 5px,
+    "offsetY": 5px,
+    "radius": 5px,
+    "color": rgba(50, 50, 50, 0.25)
+);
+
+$gaugeBgColor: rgba(175, 175, 175, 0.35);
+
+.wxstatbox
+{
+    position: relative;
+    float: left;
+
+    width: 200px;
+    height: 230px;
+
+    min-width: 200px;
+
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-weight: bold;
+
+    margin-left: 5px;
+    margin-right: 5px;
+
+    color: white;
+    @include dropShadow2($gaugeDropShadow);
+
+    
+    .wxflexstats
+    {
+        position: relative;
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .wxstat
+    {
+        position: relative;
+        font-size: 38pt;
+        line-height: 0.9em;
+        margin-top: 20px;
+
+        @include dropShadow2($textDropShadow);
+    }
+
+    
+    .wxheader
+    {
+        margin-bottom: -20px;
+
+        @include dropShadow2($textDropShadow);
+    }
+
+    .wxlabel
+    {
+        position: relative;
+        width: 100%;
+        text-align: center;
+
+        display: block;
+        text-transform: uppercase;
+        bottom: 20px;
+
+        @include dropShadow2($textDropShadow);
+    }
+
+    .wxunit {
+        @include dropShadow2($textDropShadow);
+    }
+    
+    .wxcircular-chart {
+        width: 100%;
+        height: 100%;
+    
+        position: absolute;
+        z-index: -1;
+
+        .wxcircle {
+            fill: none;
+            stroke-width: 2.8;
+            stroke-linecap: round;
+
+            transition: stroke-dasharray 1.5s;
+        }
+        
+        .wxbgelement {
+            stroke:$gaugeBgColor;
+        }
+    }
+}

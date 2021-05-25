@@ -1,0 +1,84 @@
+<div class="wxstatbox">
+    <svg viewBox="0 0 28.5 28.5" class="wxcircular-chart">
+        <filter id="inset-shadow">
+            <!-- Shadow Offset -->
+            <feOffset
+              dx='0'
+              dy='0.4'
+            />
+      
+            <!-- Shadow Blur -->
+            <feGaussianBlur
+              stdDeviation='1'
+              result='offset-blur'
+            />
+      
+            <!-- Invert the drop shadow
+                 to create an inner shadow -->
+            <feComposite
+              operator='out'
+              in='SourceGraphic'
+              in2='offset-blur'
+              result='inverse'
+            />
+      
+            <!-- Color & Opacity -->
+            <feFlood
+              flood-color='black'
+              flood-opacity='0.4'
+              result='color'
+            />
+      
+            <!-- Clip color inside shadow -->
+            <feComposite
+              operator='in'
+              in='color'
+              in2='inverse'
+              result='shadow'
+            />
+      
+            <!-- Put shadow over original object -->
+            <feComposite
+              operator='over'
+              in='shadow'
+              in2='SourceGraphic'
+            />
+          </filter>
+
+        <path class="wxbgelement" d="m 8 25 a 12 12 0 0 1 6 -22.5 a 12 12 0 0 1 6 22.5"
+            fill="none"
+            stroke="#17191c"
+            stroke-width="3.2"
+            stroke-dasharray="63.75, 63.75"
+            stroke-linecap="round"
+            filter="url(#inset-shadow)"
+            />
+        <path class="wxbgelement" d="m 14 5 a 1 1 0 0 1 0 19 a 1 1 0 0 1 0 -19"
+            fill="none"
+            stroke="#17191c"
+            stroke-width="0.33"
+            stroke-dasharray="63.75, 63.75"
+            stroke-linecap="round"
+            filter="url(#inset-shadow)"
+            />
+        <path class="wxcircle" d="m 8 25 a 12 12 0 0 1 6 -22.5 a 12 12 0 0 1 6 22.5"
+            fill="none"
+            style.stroke="{{ color }}"
+            stroke-width="1"
+            style.stroke-dasharray="{{ dashArray }}"
+            filter="url(#inset-shadow)"
+            />
+        <path class="wxarrow" #wxarrow data-dir="180" d="m 24.5 14.5 l -2 -1 l 1 1 l -1 1 l 2 -1 z"
+            fill="#FFF"
+            stroke="#FFF"
+            stroke-width="0.5"
+            stroke-linecap="square"
+            />
+    </svg>
+    <div class="wxflexstats">
+        <div class="wxheader">{{ directionString }}</div>
+        <div class="wxstat">{{ valueFormatted }}</div>
+        <div class="wxunit">{{ unit }}</div>
+    </div>
+    <div class="wxlabel">{{ title }}</div>
+</div>
