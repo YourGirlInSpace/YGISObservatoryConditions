@@ -1,4 +1,6 @@
-# Angulartest
+# Observatory Conditions
+
+This webpage was created as a quick glance dashboard for conditions around my observatory.  The purpose of this page is to have a quick way to determine whether conditions are good enough to start an astrophotography session.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.0.
 
