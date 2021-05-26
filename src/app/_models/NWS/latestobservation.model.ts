@@ -2,5 +2,9 @@ import { NWSObservationProperties } from "./obsproperties.model";
 
 export class NWSLatestObs
 {
-    properties! : NWSObservationProperties;
+    properties : NWSObservationProperties;
+
+    constructor() {
+        this.properties = new NWSObservationProperties();
+    }
 }

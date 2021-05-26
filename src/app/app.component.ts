@@ -34,44 +34,68 @@ export class AppComponent implements OnInit {
   public heatIndex! : number;
   public dewPotential! : string;
 
-  private subscription!: Subscription;
+  public lastUpdate! : Date;
+
+  private nwsDataSubscription!: Subscription;
+  private wxDataSubscription!: Subscription;
+  private timeDataSubscription!: Subscription;
+  private webcamSubscription!: Subscription;
+  private astroTimeDataSubscription!: Subscription;
 
   constructor(private tdService : TimeDayService,
               private wxStation : WXStationService,
               private nwsService : NWSService) {
+
+    this.WXData = new WXData();
+    this.ObsData = new NWSLatestObs();
+    this.TDData = new SSResults();
+    this.dewpoint = 0;
+    this.heatIndex = 0;
+    this.dewPotential = "Unknown";
+
+    this.time = new Date();
+    this.sunset = new Date();
+    this.sunrise = new Date();
+    this.astrNight = new Date();
+    this.dayPhase = "Unknown";
+    this.webcamUrl = "";
+    this.radarUrl = "";
+    this.lastUpdate = new Date();
+
+    
+    this.wxIcon = "../assets/images/wx/alert.png";
+    this.ObsData.properties.textDescription = "NWS Data N/A";
   }
 
   ngOnInit(): void {
-    this.tdService.getSunriseSunset(26.61, -81.71).subscribe(evt => {
-      this.TDData = evt;
-
-      this.sunset = evt.results.sunset;
-      this.sunrise = evt.results.sunrise;
-      this.astrNight = evt.results.astronomical_twilight_end;
-    });
-
+    this.UpdateAstronomicalTimes();
     this.UpdateWXData();
     this.UpdateNWSData();
     this.UpdateTime();
     this.UpdateWebcam();
 
-    const source3 = interval(1000*60*5);
-    this.subscription = source3.subscribe(val => this.UpdateNWSData());
+    const source = interval(1000*60*5);
+    this.nwsDataSubscription = source.subscribe(val => this.UpdateNWSData());
 
-    const source = interval(2000);
-    this.subscription = source.subscribe(val => this.UpdateWXData());
+    const source2 = interval(2000);
+    this.wxDataSubscription = source2.subscribe(val => this.UpdateWXData());
 
-    
-    const source2 = interval(1000);
-    this.subscription = source2.subscribe(val => this.UpdateTime());
+    const source3 = interval(1000);
+    this.timeDataSubscription = source3.subscribe(val => this.UpdateTime());
 
-    
     const source4 = interval(1000*30);
-    this.subscription = source4.subscribe(val => this.UpdateWebcam());
+    this.webcamSubscription = source4.subscribe(val => this.UpdateWebcam());
+    
+    const source5 = interval(1000*60*60);
+    this.astroTimeDataSubscription = source5.subscribe(val => this.UpdateAstronomicalTimes());
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.nwsDataSubscription?.unsubscribe();
+    this.wxDataSubscription?.unsubscribe();
+    this.timeDataSubscription?.unsubscribe();
+    this.webcamSubscription?.unsubscribe();
+    this.astroTimeDataSubscription?.unsubscribe();
   }
   
   private UpdateWebcam() : void {
@@ -84,6 +108,17 @@ export class AppComponent implements OnInit {
       this.ObsData = evt;
 
       this.wxIcon = this.nwsService.getWeatherIcon(evt);
+    });
+  }
+
+  private UpdateAstronomicalTimes() : void {
+    this.tdService.getSunriseSunset(26.61, -81.71).subscribe(evt => {
+      evt.isOK = true;
+      this.TDData = evt;
+
+      this.sunset = evt.results.sunset;
+      this.sunrise = evt.results.sunrise;
+      this.astrNight = evt.results.astronomical_twilight_end;
     });
   }
 
@@ -111,6 +146,8 @@ export class AppComponent implements OnInit {
         this.dewPotential = "Moderate";
       else
         this.dewPotential = "High";
+      
+      this.lastUpdate = new Date();
     });
   }
 

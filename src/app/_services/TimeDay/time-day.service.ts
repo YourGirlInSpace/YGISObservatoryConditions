@@ -11,7 +11,9 @@ export class TimeDayService {
     var formatCode = formatted ? 1 : 0;
 
     var now = new Date();
-    return this.http.get<SSResults>('https://api.sunrise-sunset.org/json?lat=' + lat + '&lng=' + long + '&formatted=' + formatCode + '&date=' + now.getFullYear() + '-' + (now.getMonth()+1) + '-' + now.getDate());
+    var ssResults  = this.http.get<SSResults>('https://api.sunrise-sunset.org/json?lat=' + lat + '&lng=' + long + '&formatted=' + formatCode + '&date=' + now.getFullYear() + '-' + (now.getMonth()+1) + '-' + now.getDate());
+
+    return ssResults;
   }
 
   getPhase(time : Date, res : SSResults) : string {

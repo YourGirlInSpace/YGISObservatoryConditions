@@ -1,19 +1,25 @@
 <div class="obsconditions">
-    <h1>Live Observatory Conditions</h1>
+    <header>
+        <h1>Live Observatory Conditions</h1>
+    </header>
 
-    <div class="wxcontainer">
-        <div class="wxcontainer wxcontainer-main">
-            <div class="wxinnercontainer wxinnercontainer-timestats" id="timeStatsDiv">
+    <main class="wxcontainer">
+        <section class="wxcontainer wxcontainer-main">
+            <section class="wxinnercontainer wxinnercontainer-timestats" id="timeStatsDiv">
                 <miscstat imgsrc="../assets/images/blackwhite/time.png" value="{{ time | date:'h:mm' }}"
-                    unit="{{ time | date:':ss a' }}" numeric="false" title="{{ dayPhase }}"></miscstat>
+                    unit="{{ time | date:':ss a' }}" numeric="false" title="{{ dayPhase }}" *ngIf="TDData?.isOK; else noTDDataTemplate"></miscstat>
                 <miscstat imgsrc="../assets/images/blackwhite/sunset.png" value="{{ sunset | date:'h:mm' }}"
-                    unit="{{ sunset | date:'a' }}" numeric="false" title="Sunset"></miscstat>
+                    unit="{{ sunset | date:'a' }}" numeric="false" title="Sunset" *ngIf="TDData?.isOK"></miscstat>
                 <miscstat imgsrc="../assets/images/blackwhite/night.png" value="{{ astrNight | date:'h:mm' }}"
-                    unit="{{ astrNight | date:'a' }}" numeric="false" title="Astr. Night"></miscstat>
+                    unit="{{ astrNight | date:'a' }}" numeric="false" title="Astr. Night" *ngIf="TDData?.isOK"></miscstat>
                 <miscstat imgsrc="../assets/images/blackwhite/sunrise.png" value="{{ sunrise | date:'h:mm' }}"
-                    unit="{{ sunrise | date:'a' }}" numeric="false" title="Sunrise"></miscstat>
-            </div>
-            <div class="wxinnercontainer wxinnercontainer-gauges" id="gaugeDiv">
+                    unit="{{ sunrise | date:'a' }}" numeric="false" title="Sunrise" *ngIf="TDData?.isOK"></miscstat>
+
+                <ng-template #noTDDataTemplate>
+                    Time/Date information not available.
+                </ng-template>
+            </section>
+            <section class="wxinnercontainer wxinnercontainer-gauges" id="gaugeDiv">
                 <basic-gauge class="gauge gauge-temperature" title="Temperature" value="{{WXData.tmp*9/5 + 32}}" decimals="1" minRange="32"
                     maxRange="120" unit="&deg;F" color="#f90"></basic-gauge>
 
@@ -29,8 +35,8 @@
 
                 <wind-gauge class="gauge gauge-winds" title="Winds" value="{{WXData.wspd}}" decimals="1" minRange="0" maxRange="50"
                     direction="{{WXData.wdir}}" unit="mph" color="#F9F"></wind-gauge>
-            </div>
-            <div class="wxinnercontainer wxinnercontainer-miscstats" id="miscStatsDiv">
+            </section>
+            <section class="wxinnercontainer wxinnercontainer-miscstats" id="miscStatsDiv">
                 <div id="currentConditions">
                     <img src="{{ wxIcon }}" />
                     <span>{{ ObsData.properties.textDescription }}</span>
@@ -43,17 +49,25 @@
                     title="Precip. Today"></miscstat>
                 <miscstat imgsrc="../assets/images/blackwhite/drop.png" value="{{ dewPotential }}" numeric="false"
                     title="Dew Potential"></miscstat>
-            </div>
-        </div>
-        <div class="wxcontainer wxcontainer-images">
+            </section>
+            <section class="wxinnercontainer wxinnercontainer-lastupdate">Live weather updated {{ lastUpdate | timeAgo }}&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="https://weather.gov" target="_blank">NWS</a>&nbsp;observations updated {{ ObsData.properties.timestamp | timeAgo }}</section>
+        </section>
+        <section class="wxcontainer wxcontainer-images">
             <div id="webcamContainer">
                 "Live" webcam from near the observatory<br />
-                <img src="{{ webcamUrl }}" id="webcam" />
+                <img src="{{ webcamUrl }}" id="webcam" /><br/>
             </div>
             <div id="radarContainer">
                 Radar Data<br />
                 <img src="{{ radarUrl }}" id="webcam" />
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
+
+    <footer>
+        <span>Copyright &copy;&nbsp;<a href="https://girlinspace.com/" target="_blank">PaxAndromeda</a>.&nbsp;&nbsp;All rights reserved.</span>
+        <span>Weather icons generously provided by&nbsp;<a href="https://www.iconfinder.com/laurareen" target="_blank">Laura Reen</a>.</span>
+        
+        <span>Webcam provided by <a href="https://www.myecwcd.net/">LAMSID</a>.&nbsp;&nbsp;26&deg;37'N&nbsp;81&deg;39'W</span>
+    </footer>
 </div>

@@ -9,13 +9,18 @@ import { AppComponent } from './app.component';
 import { TimeDayService, WXStationService, NWSService } from './_services/services';
 import { GaugeComponent, WindGaugeComponent } from './_components/Gauge/gauges';
 import { MiscellaneousStatisticComponent } from './_components/miscellaneous-statistic/miscellaneous-statistic.component';
+import { TimeAgoPipe } from './_pipes/timeagopipe';
 
 @NgModule({
   declarations: [
+    // Components
     AppComponent,
     GaugeComponent,
     WindGaugeComponent,
-    MiscellaneousStatisticComponent
+    MiscellaneousStatisticComponent,
+    
+    // Pipes
+    TimeAgoPipe
   ],
   imports: [
     BrowserModule,
@@ -23,7 +28,11 @@ import { MiscellaneousStatisticComponent } from './_components/miscellaneous-sta
     HttpClientModule,
     BrowserAnimationsModule
   ],
-  providers: [ TimeDayService, WXStationService, NWSService ],
+  providers: [
+    TimeDayService,
+    WXStationService,
+    NWSService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
